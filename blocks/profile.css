@@ -43,6 +43,8 @@
 
 .profile__edit-btn {
   margin-top: auto;
+  background: none;
+  display: flex;
   gap: 8px;
   opacity: 70%;
   width: 84;
@@ -53,6 +55,13 @@
   font-style: Medium;
   font-size: 16px;
   line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.profile__edit-btn:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+  opacity: 100%;
 }
 
 .profile__plus-btn {
@@ -67,10 +76,16 @@
   padding: 18px 32px;
   gap: 8px;
   border-radius: 8px;
-  font-family: Poppins, Arial, Helvetica, sans-serif;
   font-weight: 500;
   font-size: 16px;
   line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.profile__plus-btn:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+  opacity: 100%;
 }
 
 @media screen and (max-width: 627px) {
@@ -107,18 +122,10 @@
     gap: 8px;
     border: 0;
     opacity: 70%;
-    font-family: Poppins, Arial, Helvetica, sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 1;
   }
 
   .profile__plus-btn {
     margin: 0;
     width: 100%;
-    font-family: Poppins, Arial, Helvetica, sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 1;
   }
 }
