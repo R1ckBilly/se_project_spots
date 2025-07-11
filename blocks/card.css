@@ -14,9 +14,7 @@
   margin-bottom: 0;
   text-overflow: ellipsis;
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
 }
 
 .card__content {
@@ -47,7 +45,6 @@
   }
 
   .card__title {
-    width: 95px;
     height: 16px;
     font-family: Poppins, Arial, Helvetica, sans-serif;
     font-weight: 500;
