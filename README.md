@@ -2,7 +2,7 @@ Spots - Social Sharing Site
 
 **Intro**
 
-This project is a website that focuses in a community that people can update/upload images and their profile. The user can share about their lives and interest through their profile page and upload images of any kind. Can also remove and edit their feed at any time that's convinient.
+This project is a website that focuses in a community that people can update/upload images and their profile. The user can share about their lives and interest through their profile page and upload images of any kind. Can also remove and edit their feed at any time that's convinient. I have added an interactive open and close modal to the "edit profile" and "new post" button.
 
 **Figma**
 
@@ -17,6 +17,7 @@ The way you'll do this at work is by exporting images directly from Figma — we
 -CSS
 -Responsive Design
 -Media Quarie
+-JavaScript
 
 **Deployment**
 
