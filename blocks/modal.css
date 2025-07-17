@@ -23,6 +23,7 @@
   background-color: #fff;
   padding: 32px 50px;
   position: relative;
+  box-sizing: border-box;
 }
 
 .modal__close-btn {
@@ -76,6 +77,13 @@
   font-size: 20px;
   line-height: 1;
   box-sizing: border-box;
+  transition: (33, 33, 33, 0.4) 0.3s ease-in-out;
+}
+
+.modal__input:hover {
+  transform: scale(1.03);
+  opacity: 1;
+  cursor: pointer;
 }
 
 .modal__input::placeholder {
