@@ -18,6 +18,6 @@ newPostBtn.addEventListener("click", function () {
   newPostModal.classList.add("modal_is-opened");
 });
 
-newpostCloseBtn.addEventListener("click", function () {
+newPostCloseBtn.addEventListener("click", function () {
   newPostModal.classList.remove("modal_is-opened");
 });
