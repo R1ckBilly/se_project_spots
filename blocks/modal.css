@@ -77,13 +77,11 @@
   font-size: 20px;
   line-height: 1;
   box-sizing: border-box;
-  transition: (33, 33, 33, 0.4) 0.3s ease-in-out;
+  transition: border-color 0.3s ease-in-out;
 }
 
 .modal__input:hover {
-  transform: scale(1.03);
-  opacity: 1;
-  cursor: pointer;
+  border-color: #212121;
 }
 
 .modal__input::placeholder {
