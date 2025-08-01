@@ -28,9 +28,9 @@
 }
 
 .card__delete-btn {
-  background-image: url(../images/delete-btn.svg);
-  background-color: transparent;
-  color: #000000;
+  background: url(../images/delete-btn-d.svg) center no-repeat;
+  border-radius: 50%;
+  background-color: #0000004d;
   width: 32px;
   height: 32px;
   position: absolute;
@@ -43,7 +43,7 @@
 .card__delete-btn:hover {
   transform: scale(1.1);
   cursor: pointer;
-  background-image: url(../images/red-delete-btn.svg);
+  background-color: red;
 }
 
 .card__like-btn {

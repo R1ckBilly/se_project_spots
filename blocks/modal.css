@@ -49,11 +49,13 @@
 }
 
 .modal__close-btn_type_preview {
+  background-image: url(../images/equis-modal.svg);
   top: 0;
   right: -52.5px;
   background-color: transparent;
   color: #ffffff;
   border: none;
+  opacity: 40%;
 }
 
 .modal__close-btn:hover {
@@ -64,7 +66,9 @@
 }
 
 
-/* set up preview close button hover state */
+.modal__close-btn_type_preview:hover {
+  opacity: 1;
+}
 
 .modal__title {
   margin: 0 0 32px;
@@ -150,7 +154,8 @@
   background-color: #212121;
   border-radius: 8px;
   padding: 4px 8px;
-  max-width: 214px;
+  max-width: 100%;
+  width: fit-content;
   max-height: 32px;
 }
 

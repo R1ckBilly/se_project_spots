@@ -67,7 +67,7 @@ const cardTemplate = document
 const cardsList = document.querySelector(".cards__list");
 
 function getCardElement(data) {
-  const cardElement = cardTemplate.cloneNode(true);
+  let cardElement = cardTemplate.cloneNode(true);
   const cardTitleEl = cardElement.querySelector(".card__title");
   const cardImageEl = cardElement.querySelector(".card__image");
 
@@ -147,7 +147,6 @@ function handleAddCardSubmit(evt) {
   };
 
   const cardElement = getCardElement(inputValues);
-  thajnk;
   cardsList.prepend(cardElement);
 
   closeModal(newPostModal);
