@@ -1,3 +1,5 @@
+// TO DO - pass settings objects to the validation that are called in this file
+
 const initialCards = [
   {
     name: "Golden Gate Bridge",
@@ -52,6 +54,7 @@ const newPostCloseBtn = newPostModal.querySelector(".modal__close-btn");
 const newPostFormEl = newPostModal.querySelector(".modal__form");
 const newPostImageInput = newPostModal.querySelector("#card-image-input");
 const newPostCaptionInput = newPostModal.querySelector("#card-caption-input");
+const submitButton = newPostModal.querySelector(".modal__submit-btn");
 
 const profileNameEl = document.querySelector(".profile__name");
 const profileDescriptionEl = document.querySelector(".profile__description");
@@ -109,6 +112,11 @@ editProfileBtn.addEventListener("click", function () {
   openModal(editProfileModal);
   editProfileNameInput.value = profileNameEl.textContent;
   editProfileDescriptionInput.value = profileDescriptionEl.textContent;
+  resetValidation(
+    editProfileFormEl,
+    [editProfileNameInput, editProfileDescriptionInput],
+    settings
+  );
 });
 
 editProfileCloseBtn.addEventListener("click", function () {
@@ -129,10 +137,8 @@ newPostCloseBtn.addEventListener("click", function () {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-
   profileNameEl.textContent = editProfileNameInput.value;
   profileDescriptionEl.textContent = editProfileDescriptionInput.value;
-
   closeModal(editProfileModal);
 }
 
@@ -140,6 +146,7 @@ editProfileFormEl.addEventListener("submit", handleProfileFormSubmit);
 
 function handleAddCardSubmit(evt) {
   evt.preventDefault();
+  disableButton(submitButton, settings);
 
   const inputValues = {
     name: newPostCaptionInput.value,
@@ -148,6 +155,7 @@ function handleAddCardSubmit(evt) {
 
   const cardElement = getCardElement(inputValues);
   cardsList.prepend(cardElement);
+  evt.target.reset();
 
   closeModal(newPostModal);
 }
