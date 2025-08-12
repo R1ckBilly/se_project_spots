@@ -1,5 +1,10 @@
 import "./index.css";
 import { enableValidation, settings } from "../scripts/validation.js"
+import avatarImg from "../images/avatar.jpg";
+import editProfileIcon from "../images/pencil-logo.svg";
+import newPostIcon from "../images/plus-logo.svg";
+import spotlogoIcon from "../images/logo.svg";
+
 
 const initialCards = [
   {
@@ -48,6 +53,17 @@ const editProfileNameInput = editProfileModal.querySelector(
 const editProfileDescriptionInput = editProfileModal.querySelector(
   "#profile-description-input"
 );
+
+const avatarEl = document.querySelector(".profile__avatar");
+const editIconEl = document.querySelector(".profile__edit-icon");
+const newPostIconEl = document.querySelector(".profile__new-post-icon");
+const spotlogoIconEl = document.querySelector(".header__logo");
+
+avatarEl.src = avatarImg;
+editIconEl.src = editProfileIcon;
+newPostIconEl.src = newPostIcon;
+spotlogoIconEl.src = spotlogoIcon;
+
 
 const newPostBtn = document.querySelector(".profile__plus-btn");
 const newPostModal = document.querySelector("#new-post-modal");
