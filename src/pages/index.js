@@ -68,7 +68,7 @@ spotlogoIconEl.src = spotlogoIcon;
 const newPostBtn = document.querySelector(".profile__plus-btn");
 const newPostModal = document.querySelector("#new-post-modal");
 const newPostCloseBtn = newPostModal.querySelector(".modal__close-btn");
-const newPostFormEl = newPostModal.querySelector(".modal__form");
+const newPostFormEl = newPostModal.querySelector("#card-form");
 const newPostImageInput = newPostModal.querySelector("#card-image-input");
 const newPostCaptionInput = newPostModal.querySelector("#card-caption-input");
 const submitButton = newPostModal.querySelector(".modal__submit-btn");
@@ -142,6 +142,11 @@ function handleOverlayClose(evt) {
   if (evt.target.classList.contains("modal")) {
     closeModal(evt.target);
   }
+}
+
+function disableButton(button, settings) {
+  button.disabled = true;
+  button.classList.add(settings.inactiveButtonClass);
 }
 
 editProfileBtn.addEventListener("click", function () {
