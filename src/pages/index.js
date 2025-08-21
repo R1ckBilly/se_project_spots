@@ -1,12 +1,12 @@
 import "./index.css";
-import { enableValidation, settings } from "../scripts/validation.js"
+import { enableValidation, settings } from "../scripts/validation.js";
 import avatarImg from "../images/avatar.jpg";
 import editProfileIcon from "../images/pencil-logo.svg";
 import newPostIcon from "../images/plus-logo.svg";
 import spotlogoIcon from "../images/logo.svg";
+import Api from "../utils/Api.js";
 
-
-const initialCards = [
+/* const initialCards = [
   {
     name: "Golden Gate Bridge",
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/7-photo-by-griffin-wooldridge-from-pexels.jpg",
@@ -41,7 +41,30 @@ const initialCards = [
     name: "Mountain house",
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/6-photo-by-moritz-feldmann-from-pexels.jpg",
   },
-];
+]; */
+
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "b3cb9f17-3148-4512-95f6-d4e49b4a666e",
+    "Content-Type": "application/json",
+  },
+});
+
+// TODO - destructure the second item in the callback of the .then()
+api
+  .getAppInfo()
+  .then(([cards]) => {
+    cards.forEach((item) => {
+      const cardElement = getCardElement(item);
+      cardsList.append(cardElement);
+    });
+
+    // handle the user's information
+    // - set src of avatar img
+    // - set textcontent of both the text elements
+  })
+  .catch(console.error);
 
 const editProfileBtn = document.querySelector(".profile__edit-btn");
 const editProfileModal = document.querySelector("#edit-profile-modal");
@@ -63,7 +86,6 @@ avatarEl.src = avatarImg;
 editIconEl.src = editProfileIcon;
 newPostIconEl.src = newPostIcon;
 spotlogoIconEl.src = spotlogoIcon;
-
 
 const newPostBtn = document.querySelector(".profile__plus-btn");
 const newPostModal = document.querySelector("#new-post-modal");
@@ -178,9 +200,18 @@ newPostCloseBtn.addEventListener("click", function () {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  profileNameEl.textContent = editProfileNameInput.value;
-  profileDescriptionEl.textContent = editProfileDescriptionInput.value;
-  closeModal(editProfileModal);
+  api
+    .editUserInfo({
+      name: editProfileNameInput.value,
+      about: editProfileDescriptionInput.value,
+    })
+    .then((data) => {
+      // TDOD - use data argument instead of the input values
+      profileNameEl.textContent = editProfileNameInput.value;
+      profileDescriptionEl.textContent = editProfileDescriptionInput.value;
+      closeModal(editProfileModal);
+    })
+    .catch(console.error);
 }
 
 editProfileFormEl.addEventListener("submit", handleProfileFormSubmit);
@@ -202,10 +233,5 @@ function handleAddCardSubmit(evt) {
 }
 
 newPostFormEl.addEventListener("submit", handleAddCardSubmit);
-
-initialCards.forEach(function (item) {
-  const cardElement = getCardElement(item);
-  cardsList.append(cardElement);
-});
 
 enableValidation(settings);
