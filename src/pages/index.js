@@ -1,6 +1,7 @@
 import "./index.css";
 import { enableValidation, settings } from "../scripts/validation.js";
 import avatarImg from "../images/avatar.jpg";
+import pencilLightIcon from "../images/pencil-light.svg";
 import editProfileIcon from "../images/pencil-logo.svg";
 import newPostIcon from "../images/plus-logo.svg";
 import spotlogoIcon from "../images/logo.svg";
@@ -51,18 +52,16 @@ const api = new Api({
   },
 });
 
-// TODO - destructure the second item in the callback of the .then()
 api
   .getAppInfo()
-  .then(([cards]) => {
+  .then(([user, cards]) => {
+    profileNameEl.textContent = user.name;
+    profileDescriptionEl.textContent = user.about;
+    avatarEl.src = user.avatar;
     cards.forEach((item) => {
       const cardElement = getCardElement(item);
       cardsList.append(cardElement);
     });
-
-    // handle the user's information
-    // - set src of avatar img
-    // - set textcontent of both the text elements
   })
   .catch(console.error);
 
@@ -81,11 +80,13 @@ const avatarEl = document.querySelector(".profile__avatar");
 const editIconEl = document.querySelector(".profile__edit-icon");
 const newPostIconEl = document.querySelector(".profile__new-post-icon");
 const spotlogoIconEl = document.querySelector(".header__logo");
+const pencilLightIconEl = document.querySelector(".profile__pencil-icon");
 
 avatarEl.src = avatarImg;
 editIconEl.src = editProfileIcon;
 newPostIconEl.src = newPostIcon;
 spotlogoIconEl.src = spotlogoIcon;
+pencilLightIconEl.src = pencilLightIcon;
 
 const newPostBtn = document.querySelector(".profile__plus-btn");
 const newPostModal = document.querySelector("#new-post-modal");
@@ -102,6 +103,15 @@ const previewModal = document.querySelector("#new-post-preview-modal");
 const previewModalCloseBtn = previewModal.querySelector(".modal__close-btn");
 const previewImageEl = previewModal.querySelector(".modal__image");
 const previewCaptionEl = previewModal.querySelector(".modal__caption");
+
+const deleteModal = document.querySelector("#delete-modal");
+
+const avatarModal = document.querySelector("#avatar-modal");
+const avatarModalBtn = document.querySelector(".profile__avatar-btn");
+const avatarForm = avatarModal.querySelector(".modal__form");
+const avatarSubmitBtn = avatarModal.querySelector(".modal__submit-btn");
+const avatarModalCloseBtn = avatarModal.querySelector(".modal__close-btn");
+const avatarInput = avatarModal.querySelector("#profile-avatar-input");
 
 const cardTemplate = document
   .querySelector("#card-template")
@@ -126,6 +136,7 @@ function getCardElement(data) {
   cardDeleteBtnEl.addEventListener("click", () => {
     cardElement.remove();
     cardElement = null;
+    openModal(deleteModal);
   });
 
   cardImageEl.addEventListener("click", () => {
@@ -171,6 +182,19 @@ function disableButton(button, settings) {
   button.classList.add(settings.inactiveButtonClass);
 }
 
+function handleAvatarSubmit(evt) {
+  evt.preventDefault();
+  api
+    .editAvatarInfo({
+      avatar: avatarInput.value,
+    })
+    .then((data) => {
+      console.log(data.avatar);
+      // TODO - make this work
+    })
+    .catch(console.error);
+}
+
 editProfileBtn.addEventListener("click", function () {
   openModal(editProfileModal);
   editProfileNameInput.value = profileNameEl.textContent;
@@ -198,6 +222,14 @@ newPostCloseBtn.addEventListener("click", function () {
   closeModal(newPostModal);
 });
 
+avatarModalBtn.addEventListener("click", function () {
+  openModal(avatarModal);
+});
+
+avatarModalCloseBtn.addEventListener("click", function () {
+  closeModal(avatarModal);
+});
+
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   api
@@ -206,9 +238,9 @@ function handleProfileFormSubmit(evt) {
       about: editProfileDescriptionInput.value,
     })
     .then((data) => {
-      // TDOD - use data argument instead of the input values
-      profileNameEl.textContent = editProfileNameInput.value;
-      profileDescriptionEl.textContent = editProfileDescriptionInput.value;
+      profileNameEl.textContent = data.value;
+      profileDescriptionEl.textContent = data.value;
+      avatarEl.src = data.avatar;
       closeModal(editProfileModal);
     })
     .catch(console.error);
@@ -220,18 +252,22 @@ function handleAddCardSubmit(evt) {
   evt.preventDefault();
   disableButton(submitButton, settings);
 
-  const inputValues = {
-    name: newPostCaptionInput.value,
-    link: newPostImageInput.value,
-  };
-
-  const cardElement = getCardElement(inputValues);
-  cardsList.prepend(cardElement);
-  evt.target.reset();
-
-  closeModal(newPostModal);
+  api
+    .addCard({
+      name: newPostCaptionInput.value,
+      link: newPostImageInput.value,
+    })
+    .then((newCard) => {
+      const cardElement = getCardElement(newCard);
+      cardsList.prepend(cardElement);
+      evt.target.reset();
+      closeModal(newPostModal);
+    })
+    .catch(console.error);
 }
 
 newPostFormEl.addEventListener("submit", handleAddCardSubmit);
+
+avatarForm.addEventListener("submit", handleAvatarSubmit);
 
 enableValidation(settings);
