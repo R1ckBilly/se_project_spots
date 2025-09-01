@@ -126,7 +126,7 @@ const cardsList = document.querySelector(".cards__list");
 let selectedCard;
 let selectedCardId;
 
-function getCardElement(data, currentUserId) {
+function getCardElement(data) {
   const likes = data.likes || [];
   let cardElement = cardTemplate.cloneNode(true);
   const cardTitleEl = cardElement.querySelector(".card__title");
@@ -138,7 +138,7 @@ function getCardElement(data, currentUserId) {
 
   const cardLikeBtnEl = cardElement.querySelector(".card__like-btn");
 
-  if (likes.some(user => user._id === currentUserId)) {
+  if (data.isLiked) {
   cardLikeBtnEl.classList.add("card__like-btn_liked");
 }
 
@@ -160,7 +160,7 @@ function getCardElement(data, currentUserId) {
 
 function handleDeleteSubmit(evt) {
   evt.preventDefault();
-  submitButton.textContent = "Saving...";
+  setButtonText(evt.submitter, true, "Delete", "Deleting...");
   api
     .deleteCard(selectedCardId)
     .then((res) => {
@@ -169,7 +169,7 @@ function handleDeleteSubmit(evt) {
     })
     .catch(console.error)
     .finally(() => {
-      submitButton.textContent = "Save";
+      setButtonText(evt.submitter, false, "Delete", "Deleting...");
     })
 }
 
@@ -179,8 +179,8 @@ function handleDeleteCard(cardElement, data) {
   openModal(deleteModal);
 }
 
-function handleLike(evt, id) {
-   const isLiked = evt.target.classList.contains("card__like-btn_liked");
+function handleLike(evt, id, data) {
+   const isLiked = data.isLiked;
 
    api.changeLikeStatus(id, isLiked)
         .then(() => {
@@ -188,6 +188,20 @@ function handleLike(evt, id) {
         })
         .catch(console.error);
   }
+
+function setButtonText(
+  btnElement,
+  isLoading = false,
+  defaultText = "Save",
+  loadingText = "Saving...",
+){
+  if (isLoading){
+    btnElement.textContent = loadingText;
+  }
+  else {
+    btnElement.textContent = defaultText
+  }
+}
 
 function openModal(modal) {
   modal.classList.add("modal_is-opened");
@@ -223,6 +237,8 @@ function disableButton(button, settings) {
 
 function handleAvatarSubmit(evt) {
   evt.preventDefault();
+  setButtonText(evt.submitter, true, "Save", "Saving...");
+
   api
     .editAvatarInfo({
       avatar: avatarInput.value,
@@ -230,7 +246,10 @@ function handleAvatarSubmit(evt) {
     .then((data) => {
       console.log(data.avatar);
     })
-    .catch(console.error);
+    .catch(console.error)
+    .finally(() => {
+      setButtonText(evt.submitter, false, "Save", "Saving...");
+    })
 }
 
 editProfileBtn.addEventListener("click", function () {
@@ -274,8 +293,7 @@ deleteModalCloseBtn.addEventListener("click", function () {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  const submitButton = evt.submitter;
-  submitButton.textContent = "Saving...";
+  setButtonText(evt.submitter, true, "Save", "Saving...");
 
   api
     .editUserInfo({
@@ -290,7 +308,7 @@ function handleProfileFormSubmit(evt) {
     })
     .catch(console.error)
     .finally(() => {
-      submitButton.textContent = "Save";
+      setButtonText(evt.submitter, false, "Save", "Saving");
     })
 }
 
@@ -298,7 +316,7 @@ editProfileFormEl.addEventListener("submit", handleProfileFormSubmit);
 
 function handleAddCardSubmit(evt) {
   evt.preventDefault();
-  submitButton.textContent = "Saving...";
+  setButtonText(evt.submitter, true, "Save", "Saving...");
   disableButton(submitButton, settings);
 
   api
@@ -307,14 +325,14 @@ function handleAddCardSubmit(evt) {
       link: newPostImageInput.value,
     })
     .then((newCard) => {
-      const cardElement = getCardElement(newCard, currentUserId);
+      const cardElement = getCardElement(newCard);
       cardsList.prepend(cardElement);
       evt.target.reset();
       closeModal(newPostModal);
     })
     .catch(console.error)
     .finally(() => {
-      submitButton.textContent = "Save";
+      setButtonText(evt.submitter, false, "Save", "Saving...");
     })
 }
 

@@ -190,7 +190,7 @@
 }
 
 .modal__title_type_delete {
-  width: 590px;
+  max-width: 590px;
   height: 24px;
   font-family: Poppins;
   font-weight: 500;
@@ -249,6 +249,12 @@
 
   .modal__submit-btn {
     max-width: none;
+  }
+
+  .modal__form_type_delete {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
   }
 }
 
